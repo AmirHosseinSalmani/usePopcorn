@@ -6,7 +6,7 @@ export default function Watching({ dataVideo, isloding, handelError }) {
   const [selectedID, setSlectedID] = useState(null);
   const [addToFavorites, setAddToFavorites] = useState(function () {
     const locStor = localStorage.getItem("favorite");
-    return JSON.parse(locStor);
+    return locStor ? JSON.parse(locStor) : [];
   });
 
   function handelID(ID) {
