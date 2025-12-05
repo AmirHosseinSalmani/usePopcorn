@@ -12,8 +12,8 @@ export default function App() {
   const [isLoding, setIsLoding] = useState(false);
   const [handelError, setHanderError] = useState("");
 
-  const controller = new AbortController();
   useEffect(() => {
+    const controller = new AbortController();
     async function fetchMovies() {
       try {
         setIsLoding(true);

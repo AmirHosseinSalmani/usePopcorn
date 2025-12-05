@@ -4,7 +4,10 @@ import StarRaiting from "./StarRaiting";
 export default function Watching({ dataVideo, isloding, handelError }) {
   const [close, setclose] = useState(true);
   const [selectedID, setSlectedID] = useState(null);
-  const [addToFavorites, setAddToFavorites] = useState([], "watched");
+  const [addToFavorites, setAddToFavorites] = useState(function () {
+    const locStor = localStorage.getItem("favorite");
+    return JSON.parse(locStor);
+  });
 
   function handelID(ID) {
     setSlectedID((item) => (item === ID ? null : ID));
@@ -20,9 +23,17 @@ export default function Watching({ dataVideo, isloding, handelError }) {
     setAddToFavorites((after) => [...after, movie]);
     setSlectedID(null);
   }
+
+  useEffect(
+    function () {
+      localStorage.setItem("favorite", JSON.stringify(addToFavorites));
+    },
+    [addToFavorites]
+  );
   function handelDeleteWached(id) {
     setAddToFavorites((watched) => watched.filter((mov) => mov.imdbID !== id));
   }
+
   useEffect(
     function () {
       function callBack(e) {
@@ -132,7 +143,7 @@ function AddFavoriteItem({ movie, handelID, handelDeleteWached }) {
             </p>
             <p>
               <span>⏳</span>
-  <span>{movie.runtime} min</span>
+              <span>{movie.runtime} min</span>
             </p>
 
             <button
@@ -184,9 +195,9 @@ function MoviesDitails({ selectedID, BackID, handelAddr, Watched }) {
   const [islodinger, setIsLodinger] = useState(false);
   const [handelErrorer, setHandleErrorer] = useState();
 
-  const controller = new AbortController();
   useEffect(
     function () {
+      const controller = new AbortController();
       async function getMoviedetails() {
         try {
           setIsLodinger(true);
