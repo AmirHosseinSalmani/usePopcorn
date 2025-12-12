@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Watched from "./Watched";
 import StarRaiting from "./StarRaiting";
+import { useFetch } from "./useFetch";
 export default function Watching({ dataVideo, isloding, handelError }) {
   const [close, setclose] = useState(true);
   const [selectedID, setSlectedID] = useState(null);
@@ -190,41 +191,9 @@ function ItemVideo({ dataItem, handelID }) {
   );
 }
 const KEY = "f84fc31d";
+
 function MoviesDitails({ selectedID, BackID, handelAddr, Watched }) {
-  const [movies, setMovies] = useState({});
-  const [islodinger, setIsLodinger] = useState(false);
-  const [handelErrorer, setHandleErrorer] = useState();
-
-  useEffect(
-    function () {
-      const controller = new AbortController();
-      async function getMoviedetails() {
-        try {
-          setIsLodinger(true);
-          const res = await fetch(
-            `https://www.omdbapi.com/?apikey=${KEY}&i=${selectedID}`,
-            { signal: controller.signal }
-          );
-
-          const data = await res.json();
-
-          if (!res.ok)
-            throw new Error("Something went worng with fetching movies");
-
-          setMovies(data);
-        } catch (error) {
-          if (error.name !== "AbortError") setHandleErrorer(error.message);
-        } finally {
-          setIsLodinger(false);
-        }
-      }
-      getMoviedetails();
-      return function () {
-        controller.abort();
-      };
-    },
-    [selectedID]
-  );
+  const { movies, islodinger, handelErrorer } = useFetch(selectedID);
   return (
     <div className="w-[45%] h-full mt-5 text-white  bg-gray-700/70 lg:mx-10 rounded-md overflow-y-auto scrollbar-hide relative ">
       {handelErrorer ? (

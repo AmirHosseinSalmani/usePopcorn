@@ -1,4 +1,4 @@
-import { Children, useState } from "react";
+import { useState } from "react";
 
 export default function Watched({ children, watched }) {
   const [close, setclose] = useState(false);
@@ -32,10 +32,10 @@ const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 function ScoreMovies({ watched }) {
-    const avgImdbRating = average(watched.map((mov) => mov.imdbRating));
-    const avgUserRating = average(watched.map((mov) => mov.userRating));
-    const avgRuntime = average(watched.map((mov) => mov.runtime));
-  
+  const avgImdbRating = average(watched.map((mov) => mov.imdbRating));
+  const avgUserRating = average(watched.map((mov) => mov.userRating));
+  const avgRuntime = average(watched.map((mov) => mov.runtime));
+
   return (
     <div className="p-6 text-white bg-black/25 rounded-md shadow-xl">
       <h1 className="font-bold mb-2">MOVIES YOU WATCHED</h1>
