@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import Hedear from "./Hedear/Hedear";
+import Hedear from "./Hedear";
 import Watching from "./Watching";
 
 const KEY = "f84fc31d";

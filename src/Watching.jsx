@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import Watched from "./Watched";
 import StarRaiting from "./StarRaiting";
-import { useFetch } from "./useFetch";
+
+// custom hooks
+import { useFetch } from "./customHook/useFetch";
+import { useStorage } from "./customHook/useStorage";
+import { useKeyword } from "./customHook/useKeyword";
 export default function Watching({ dataVideo, isloding, handelError }) {
   const [close, setclose] = useState(true);
   const [selectedID, setSlectedID] = useState(null);
-  const [addToFavorites, setAddToFavorites] = useState(function () {
-    const locStor = localStorage.getItem("favorite");
-    return locStor ? JSON.parse(locStor) : [];
-  });
-
+  const [addToFavorites, setAddToFavorites] = useStorage("favorite");
+  useKeyword(handlerBack, "Escape");
   function handelID(ID) {
     setSlectedID((item) => (item === ID ? null : ID));
   }
@@ -25,31 +26,10 @@ export default function Watching({ dataVideo, isloding, handelError }) {
     setSlectedID(null);
   }
 
-  useEffect(
-    function () {
-      localStorage.setItem("favorite", JSON.stringify(addToFavorites));
-    },
-    [addToFavorites]
-  );
   function handelDeleteWached(id) {
     setAddToFavorites((watched) => watched.filter((mov) => mov.imdbID !== id));
   }
 
-  useEffect(
-    function () {
-      function callBack(e) {
-        if (e.code === "Escape") {
-          handlerBack();
-          console.log("hello");
-        }
-      }
-      document.addEventListener("keydown", callBack);
-      return function () {
-        document.removeEventListener("keydown", callBack);
-      };
-    },
-    [selectedID]
-  );
   return (
     <div className="flex mb-5 h-180 ">
       <div
